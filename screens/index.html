@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeCall — Demo Screens (Elder &amp; Caregiver)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111418; --paper:#ffffff; --muted:#5b6470;
+    --blue:#0a57d0; --green:#0a7d33; --red:#b3261e; --amber:#9a6a00;
+    --green-bg:#e6f4ea; --red-bg:#fdeceb; --amber-bg:#fdf3d8; --blue-bg:#e8f0fe;
+    --page:#eef0f3; --frame:#15181c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--page); color:var(--ink); font-family:'Inter',system-ui,sans-serif; line-height:1.45;}
+
+  /* ---------- page chrome ---------- */
+  header.page{background:var(--ink); color:#fff; padding:40px 32px 28px;}
+  header.page h1{font-size:30px; margin-bottom:8px;}
+  header.page p{max-width:880px; color:#c8cdd4; font-size:15px;}
+  nav.toc{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid #d7dbe0; padding:10px 32px; display:flex; flex-wrap:wrap; gap:6px 18px; font-size:14px;}
+  nav.toc a{color:var(--blue); text-decoration:none; font-weight:600;}
+  nav.toc a:hover{text-decoration:underline;}
+  section.journey{padding:36px 32px 12px; max-width:1500px; margin:0 auto;}
+  section.journey>h2{font-size:22px; margin-bottom:4px;}
+  section.journey>p.lede{color:var(--muted); font-size:15px; max-width:880px; margin-bottom:24px;}
+  .tag{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; border-radius:99px; padding:3px 10px; margin-right:6px; vertical-align:middle;}
+  .tag.elder{background:var(--green-bg); color:var(--green);}
+  .tag.cg{background:var(--blue-bg); color:var(--blue);}
+  .tag.ios{background:#f1f3f4; color:#444;}
+  .tag.and{background:#e7f5ec; color:#1b6b3a;}
+  .row{display:flex; flex-wrap:wrap; gap:28px; margin-bottom:28px;}
+  .device{width:312px;}
+  .device .cap{margin-top:10px; font-size:13px; color:#3c434c;}
+  .device .cap b{display:block; font-size:13.5px; color:var(--ink); margin-bottom:2px;}
+
+  /* ---------- phone frame ---------- */
+  .phone{width:312px; height:648px; background:var(--frame); border-radius:40px; padding:9px; box-shadow:0 14px 30px rgba(0,0,0,.22), 0 2px 6px rgba(0,0,0,.18); position:relative;}
+  .phone .screen{width:100%; height:100%; border-radius:32px; overflow:hidden; background:var(--paper); display:flex; flex-direction:column; position:relative;}
+  .phone.ios::after{content:""; position:absolute; top:16px; left:50%; transform:translateX(-50%); width:96px; height:24px; background:var(--frame); border-radius:14px;}
+  .phone.and::after{content:""; position:absolute; top:18px; left:50%; transform:translateX(-50%); width:12px; height:12px; background:var(--frame); border-radius:50%;}
+  .sbar{height:44px; flex:none; display:flex; align-items:flex-end; justify-content:space-between; padding:0 22px 4px; font-size:12.5px; font-weight:600; color:inherit;}
+  .body{flex:1; display:flex; flex-direction:column; padding:14px 18px 18px; overflow:hidden;}
+  .body.center{justify-content:center; align-items:center; text-align:center;}
+
+  /* ---------- elder design language: huge, high-contrast, 1–2 actions ---------- */
+  .elder-ui{font-family:'Atkinson Hyperlegible','Inter',sans-serif;}
+  .elder-ui h3{font-size:30px; line-height:1.2;}
+  .elder-ui p{font-size:20px; line-height:1.35;}
+  .bigicon{font-size:64px; line-height:1; margin-bottom:14px;}
+  .btn{display:flex; align-items:center; justify-content:center; width:100%; min-height:64px; border-radius:18px; font-size:23px; font-weight:700; border:none; margin-top:12px; font-family:inherit;}
+  .btn.green{background:var(--green); color:#fff;}
+  .btn.red{background:var(--red); color:#fff;}
+  .btn.blue{background:var(--blue); color:#fff;}
+  .btn.ghost{background:#fff; color:var(--ink); border:3px solid var(--ink); font-size:20px; min-height:56px;}
+  .btn.sm{min-height:46px; font-size:16px; font-weight:600; border-radius:12px;}
+
+  /* ---------- caregiver design language: standard density ---------- */
+  .cg-ui h3{font-size:20px;}
+  .cg-ui p{font-size:13.5px; color:#333;}
+  .cg-ui .sub{color:var(--muted); font-size:12.5px;}
+  .card{border:1px solid #dadfe5; border-radius:14px; padding:12px 14px; margin-top:10px; background:#fff; text-align:left;}
+  .card h4{font-size:13.5px; margin-bottom:2px;}
+  .card p{font-size:12.5px; color:#444;}
+  .pill{display:inline-block; font-size:11px; font-weight:700; border-radius:99px; padding:2px 9px;}
+  .pill.ok{background:var(--green-bg); color:var(--green);}
+  .pill.bad{background:var(--red-bg); color:var(--red);}
+  .pill.warn{background:var(--amber-bg); color:var(--amber);}
+  .pill.info{background:var(--blue-bg); color:var(--blue);}
+  .kv{display:flex; justify-content:space-between; font-size:12.5px; padding:7px 0; border-bottom:1px solid #eceff2;}
+  .kv:last-child{border-bottom:none;}
+  .kv .k{color:var(--muted);}
+  .meter{height:10px; border-radius:6px; background:#e7eaee; overflow:hidden; margin:6px 0 4px;}
+  .meter>i{display:block; height:100%;}
+  .appbar{flex:none; display:flex; align-items:center; gap:10px; padding:10px 18px; border-bottom:1px solid #e4e7eb; font-weight:700; font-size:16px;}
+  .appbar .back{font-size:18px; color:var(--blue); font-weight:400;}
+  .logo{width:26px; height:26px; border-radius:8px; background:var(--blue); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:14px;}
+
+  /* ---------- call screens (dark) ---------- */
+  .phone .screen.callscreen{background:linear-gradient(180deg,#101418 0%,#1c2530 100%); color:#fff;}
+  .callscreen .sbar{color:#fff;}
+  .avatar{width:108px; height:108px; border-radius:50%; background:#3a7bd5; color:#fff; display:flex; align-items:center; justify-content:center; font-size:44px; font-weight:700; margin:0 auto 14px;}
+  .callbtns{display:flex; justify-content:space-around; width:100%; padding:0 8px;}
+  .cbtn{display:flex; flex-direction:column; align-items:center; gap:8px; font-size:17px; font-weight:700;}
+  .cbtn .circ{width:84px; height:84px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:38px;}
+  .circ.ans{background:var(--green);}
+  .circ.dec{background:var(--red);}
+  .vbadge{display:inline-flex; align-items:center; gap:6px; background:rgba(16,125,51,.25); border:2px solid #35c463; color:#7af0a4; border-radius:99px; padding:6px 14px; font-size:16px; font-weight:700;}
+
+  /* ---------- misc ---------- */
+  .stepnum{display:inline-flex; width:34px; height:34px; border-radius:50%; background:var(--ink); color:#fff; align-items:center; justify-content:center; font-size:18px; font-weight:700; flex:none;}
+  .dialcode{font-family:ui-monospace,monospace; font-size:34px; font-weight:700; letter-spacing:.04em; background:#f1f3f5; border:3px dashed #9aa3ad; border-radius:14px; padding:14px 10px; text-align:center; margin:12px 0;}
+  .banner{border-radius:14px; padding:12px 14px; font-weight:700; display:flex; gap:10px; align-items:flex-start;}
+  .banner.warn{background:var(--amber-bg); color:#5e4200; border:2px solid #d9a400;}
+  .banner.danger{background:var(--red-bg); color:#7f1d18; border:2px solid var(--red);}
+  .listrow{display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid #e7eaee; text-align:left;}
+  .listrow .ic{width:44px; height:44px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-size:21px;}
+  .ic.g{background:var(--green-bg);} .ic.r{background:var(--red-bg);} .ic.b{background:var(--blue-bg);} .ic.a{background:var(--amber-bg);}
+  .listrow .t{flex:1; min-width:0;}
+  .listrow .t b{display:block; font-size:15px;}
+  .listrow .t span{font-size:12.5px; color:var(--muted);}
+  footer.page{padding:28px 32px 48px; color:var(--muted); font-size:13px; max-width:1100px;}
+  .note{background:#fff; border-left:4px solid var(--blue); border-radius:8px; padding:12px 16px; font-size:13.5px; color:#333; max-width:880px; margin:0 0 24px;}
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>SafeCall — Demo Screens</h1>
+  <p>Mockups for the caregiver-managed scam-call screening service. Two design languages: the <b style="color:#7af0a4">elder app</b> (very large Atkinson Hyperlegible type, high contrast, never more than two actions on a screen) and the <b style="color:#9ec3ff">caregiver app</b> (standard density, asynchronous management). Personas: <b>Mary</b> (the parent) and <b>Sarah</b> (her daughter, the caregiver). “SafeCall” is a placeholder name.</p>
+</header>
+
+<nav class="toc">
+  <a href="#cg-setup">1 · Caregiver setup</a>
+  <a href="#elder-setup">2 · Parent phone setup</a>
+  <a href="#elder-use">3 · Elder daily use</a>
+  <a href="#cg-use">4 · Caregiver daily use</a>
+  <a href="#uninstall">5 · Uninstall</a>
+  <a href="#platforms">6 · iPhone vs Android</a>
+</nav>
+
+<!-- ============================================================= -->
+<section class="journey" id="cg-setup">
+  <h2><span class="tag cg">Caregiver app</span> 1 · Installation — Sarah sets everything up remotely</h2>
+  <p class="lede">The buyer is the adult child. Setup happens on <i>her</i> phone first: account, parent profile, the carrier-plan verification gate, and the trusted-caller list — before anything touches Mary’s phone.</p>
+
+  <div class="row">
+    <!-- 1.1 welcome -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="body center">
+          <div class="bigicon">🛡️</div>
+          <h3>Protect a parent from phone scams</h3>
+          <p class="sub" style="margin-top:10px;">You manage everything from your phone. Your parent just answers calls from people you both trust.</p>
+          <div class="card" style="width:100%;">
+            <div class="kv"><span>✓</span><span style="flex:1; padding-left:8px; text-align:left;">Scam &amp; robocalls never ring her phone</span></div>
+            <div class="kv"><span>✓</span><span style="flex:1; padding-left:8px; text-align:left;">AI listens for scams even on trusted calls</span></div>
+            <div class="kv"><span>✓</span><span style="flex:1; padding-left:8px; text-align:left;">Her number and phone stay the same</span></div>
+          </div>
+          <button class="btn blue sm" style="margin-top:18px;">Get started</button>
+          <button class="btn ghost sm">I already have an account</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>1.1 — Welcome (caregiver)</b>Leads with the buyer’s fear (financial loss) and the dignity frame: “you curate, she keeps her phone.”</p>
+    </div>
+
+    <!-- 1.2 add parent -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Add your parent</div>
+        <div class="body">
+          <p class="sub">Step 1 of 4</p>
+          <div class="card">
+            <h4>Parent’s name</h4>
+            <p style="font-size:15px; padding:8px 0 2px;">Mary Thompson</p>
+          </div>
+          <div class="card">
+            <h4>Her mobile number</h4>
+            <p style="font-size:15px; padding:8px 0 2px;">(604) 555-0188</p>
+            <p class="sub">This number never changes. Callers keep dialing it as usual.</p>
+          </div>
+          <div class="card">
+            <h4>Who will set up her phone?</h4>
+            <p style="font-size:14px; padding:6px 0 2px;">◉ Me, in person &nbsp;&nbsp; ○ Someone else (send them a link)</p>
+          </div>
+          <div style="flex:1"></div>
+          <button class="btn blue sm">Continue</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>1.2 — Add the parent</b>Captures the three roles up front: user (Mary), manager (Sarah), and the optional setup person.</p>
+    </div>
+
+    <!-- 1.3 carrier gate pass -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Checking Mary’s plan</div>
+        <div class="body">
+          <p class="sub">Step 2 of 4 — Call forwarding rides your parent’s phone plan, so we check it before anything is switched on.</p>
+          <div class="card" style="border-color:var(--green); background:var(--green-bg);">
+            <h4>✅ Telus — Postpaid (Essentials 5G)</h4>
+            <p>Call forwarding is <b>included in this plan</b>.</p>
+          </div>
+          <div class="card">
+            <div class="kv"><span class="k">Forwarding supported</span><span class="pill ok">Yes</span></div>
+            <div class="kv"><span class="k">Included allowance</span><span><b>3,000 min / month</b></span></div>
+            <div class="kv"><span class="k">Typical usage</span><span>~ 300 min / month</span></div>
+            <div class="kv"><span class="k">Extra cost to Mary</span><span class="pill ok">None expected</span></div>
+          </div>
+          <p class="sub" style="margin-top:10px;">Forwarded minutes are part of Mary’s plan, not a SafeCall fee. We re-check this monthly and alert you near the limit.</p>
+          <div style="flex:1"></div>
+          <button class="btn blue sm">Looks right — continue</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>1.3 — Carrier plan check: PASS</b>The hard onboarding gate. Transparent that forwarding cost rides the parent’s plan; nothing activates before this passes.</p>
+    </div>
+
+    <!-- 1.4 carrier gate fail -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Checking Mary’s plan</div>
+        <div class="body">
+          <p class="sub">Step 2 of 4</p>
+          <div class="card" style="border-color:var(--red); background:var(--red-bg);">
+            <h4>⛔ Telus — Prepaid</h4>
+            <p>Prepaid plans <b>can’t forward calls</b>, so SafeCall can’t protect this line yet. We stopped here — nothing was changed and you won’t be charged.</p>
+          </div>
+          <div class="card">
+            <h4>How to fix it</h4>
+            <p style="margin-top:4px;">① Move Mary to a Telus postpaid plan that includes forwarding (most current plans do), or</p>
+            <p style="margin-top:4px;">② Switch her to another carrier — we’ll show which plans work.</p>
+          </div>
+          <button class="btn blue sm">See compatible plans</button>
+          <button class="btn ghost sm">Remind me later</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>1.4 — Carrier plan check: BLOCKED</b>The prepaid carve-out handled honestly: stop before activation rather than let a surprise per-minute bill destroy trust.</p>
+    </div>
+
+    <!-- 1.5 trusted list -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Trusted callers</div>
+        <div class="body">
+          <p class="sub">Step 3 of 4 — These people ring Mary directly. Everyone else is screened first. We’ll suggest more from her contacts and call history during phone setup.</p>
+          <div class="listrow"><div class="ic g">👩</div><div class="t"><b>Sarah (you)</b><span>Daughter · (604) 555-0123</span></div><span class="pill ok">Trusted</span></div>
+          <div class="listrow"><div class="ic g">👨</div><div class="t"><b>Tom Thompson</b><span>Son · (416) 555-0177</span></div><span class="pill ok">Trusted</span></div>
+          <div class="listrow"><div class="ic g">🏥</div><div class="t"><b>Dr. Patel’s office</b><span>(604) 555-0102</span></div><span class="pill ok">Trusted</span></div>
+          <div class="listrow"><div class="ic g">💊</div><div class="t"><b>Shoppers Pharmacy</b><span>(604) 555-0166</span></div><span class="pill ok">Trusted</span></div>
+          <button class="btn ghost sm">＋ Add a trusted caller</button>
+          <p class="sub" style="margin-top:8px;">Even trusted calls are quietly monitored for scams — being on this list skips the screening question, never the safety net.</p>
+          <div style="flex:1"></div>
+          <button class="btn blue sm">Continue</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>1.5 — Build the trusted list</b>Caregiver-curated allowlist. Copy makes the key rule visible: trusted = skip the challenge, <i>not</i> skip monitoring.</p>
+    </div>
+
+    <!-- 1.6 handoff -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Set up Mary’s phone</div>
+        <div class="body center">
+          <div class="bigicon">📲</div>
+          <h3>Almost there</h3>
+          <p class="sub" style="margin:10px 0 16px;">Step 4 of 4 — Now install SafeCall on Mary’s phone. It takes about 5 minutes, in person or over a call with her.</p>
+          <div class="card" style="width:100%;">
+            <h4>Pairing code for Mary’s phone</h4>
+            <div class="dialcode" style="font-size:28px;">MARY-4827</div>
+            <p class="sub">Valid for 24 hours.</p>
+          </div>
+          <button class="btn blue sm" style="margin-top:14px;">Text setup link to a helper</button>
+          <button class="btn ghost sm">I’m with Mary now — continue</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>1.6 — Handoff to the parent’s phone</b>Bridges to whoever physically sets up the phone — Sarah in person, or a third “setup person” via link + pairing code.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<section class="journey" id="elder-setup">
+  <h2><span class="tag elder">Elder app</span> 2 · Setting up Mary’s phone <span class="tag and">Android shown</span></h2>
+  <p class="lede">Run by the setup person with Mary present. Elder design rules apply even here: one step per screen, giant type, no jargon. The app explains what it asks for and why.</p>
+
+  <div class="row">
+    <!-- 2.1 pairing -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center">
+          <div class="bigicon">🛡️</div>
+          <h3>Hello Mary</h3>
+          <p style="margin-top:10px;">Your daughter Sarah set this up to keep scam calls away.</p>
+          <p style="margin-top:14px;">Enter the code from Sarah:</p>
+          <div class="dialcode" style="width:100%;">MARY-4827</div>
+          <button class="btn green">Connect to Sarah</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>2.1 — Pairing</b>One field, one button. Names the caregiver to frame the app as family care, not surveillance.</p>
+    </div>
+
+    <!-- 2.2 permissions -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body">
+          <h3>The app needs three permissions</h3>
+          <div class="listrow" style="margin-top:14px;"><div class="ic b">👥</div><div class="t"><b style="font-size:19px;">Contacts</b><span style="font-size:15px;">So calls from family and friends come straight through</span></div></div>
+          <div class="listrow"><div class="ic b">🎤</div><div class="t"><b style="font-size:19px;">Microphone</b><span style="font-size:15px;">So you can talk on calls through this app</span></div></div>
+          <div class="listrow"><div class="ic b">🔔</div><div class="t"><b style="font-size:19px;">Notifications</b><span style="font-size:15px;">So your phone rings when a call arrives</span></div></div>
+          <div style="flex:1"></div>
+          <button class="btn green">Allow all three</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>2.2 — Permissions, in plain words</b>Contacts feed the allowlist; mic + notifications make the Voice SDK client able to ring and answer.</p>
+    </div>
+
+    <!-- 2.3 battery -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body">
+          <h3>Keep SafeCall awake</h3>
+          <p style="margin-top:10px;">Some phones put apps to sleep to save battery. If that happens, calls go to voicemail instead of ringing.</p>
+          <div class="banner warn" style="margin-top:14px; font-size:17px;">⚠️ <span>On the next screen, choose “<b>Don’t optimize</b>” for SafeCall.</span></div>
+          <div style="flex:1"></div>
+          <button class="btn green">Open battery settings</button>
+          <p style="font-size:15px; color:var(--muted); margin-top:10px; text-align:center;">Sarah will be alerted automatically if this phone ever stops answering.</p>
+        </div>
+      </div></div>
+      <p class="cap"><b>2.3 — Android battery exemption</b>Directly targets the “dontkillmyapp” OEM-killer risk; the heartbeat (4.6) is the named backstop.</p>
+    </div>
+
+    <!-- 2.4 forwarding -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body">
+          <h3>Last step: switch on protection</h3>
+          <p style="margin-top:10px;">This sends every call through SafeCall first. Your number stays exactly the same.</p>
+          <div class="dialcode" style="font-size:24px;">*21*6045550199#</div>
+          <button class="btn green">Dial it for me</button>
+          <p style="font-size:16px; color:var(--muted); margin-top:12px; text-align:center;">You can switch this off any time by dialing <b>#21#</b>.</p>
+        </div>
+      </div></div>
+      <p class="cap"><b>2.4 — Activate unconditional forwarding</b>The app dials the carrier code itself (one tap). The off-code is shown from day one — no lock-in.</p>
+    </div>
+
+    <!-- 2.5 test -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center" style="background:var(--green-bg);">
+          <div class="bigicon">✅</div>
+          <h3>You are protected, Mary</h3>
+          <p style="margin-top:12px;">We just made a test call and your phone rang through SafeCall.</p>
+          <p style="margin-top:12px;"><b>Nothing changes for you.</b> Answer the phone when it rings, like always.</p>
+          <button class="btn green" style="margin-top:18px;">Done</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>2.5 — Verified working</b>Setup ends with a real test call through the relay, not just “settings saved.” Sarah’s app gets the same confirmation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<section class="journey" id="elder-use">
+  <h2><span class="tag elder">Elder app</span> 3 · Daily use — Mary’s point of view</h2>
+  <p class="lede">Mary’s experience is deliberately boring: trusted calls ring like normal calls. The app only speaks up when something is wrong — and it speaks <b>out loud</b> first (audio-over-text default), with the screen as backup.</p>
+
+  <div class="row">
+    <!-- 3.1 home -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body">
+          <div style="text-align:center; padding:10px 0 4px;">
+            <div class="bigicon" style="margin-bottom:6px;">🛡️</div>
+            <h3 style="color:var(--green);">You are protected</h3>
+            <p style="font-size:17px; color:var(--muted);">SafeCall is checking your calls</p>
+          </div>
+          <p style="font-size:17px; font-weight:700; margin:14px 0 2px;">Recent calls</p>
+          <div class="listrow"><div class="ic g">👩</div><div class="t"><b style="font-size:19px;">Sarah</b><span style="font-size:15px;">Today 9:02 AM · You talked</span></div></div>
+          <div class="listrow"><div class="ic b">💬</div><div class="t"><b style="font-size:19px;">New message</b><span style="font-size:15px;">Today 8:15 AM · Tap to listen</span></div><span style="font-size:24px;">▶</span></div>
+          <div class="listrow"><div class="ic r">🚫</div><div class="t"><b style="font-size:19px;">Scam call stopped</b><span style="font-size:15px;">Yesterday · It never rang you</span></div></div>
+          <div style="flex:1"></div>
+          <button class="btn blue">Call Sarah</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>3.1 — Elder home screen</b>Three things only: protection status, recent calls in plain words (“Scam call stopped”), and one big button to call the caregiver.</p>
+    </div>
+
+    <!-- 3.2 incoming trusted -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui callscreen">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center">
+          <div class="avatar">S</div>
+          <h3 style="font-size:36px;">Sarah</h3>
+          <p style="font-size:21px; color:#cdd6e0; margin:6px 0 14px;">Your daughter</p>
+          <div class="vbadge">✓ Trusted caller</div>
+          <div style="flex:1"></div>
+          <div class="callbtns">
+            <div class="cbtn"><div class="circ dec">✕</div>Decline</div>
+            <div class="cbtn"><div class="circ ans">✓</div>Answer</div>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>3.2 — Incoming trusted call</b>Allowlisted + STIR/SHAKEN-verified → fast path. Big name, relationship, “Trusted” badge, two giant buttons. Monitoring still runs silently.</p>
+    </div>
+
+    <!-- 3.3 screened unknown passed -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui callscreen">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center">
+          <div class="avatar" style="background:#5b6470;">?</div>
+          <h3 style="font-size:30px;">Lakeview Clinic</h3>
+          <p style="font-size:19px; color:#cdd6e0; margin:6px 0 14px;">(604) 555-0142 · Not in your contacts</p>
+          <div class="vbadge" style="border-color:#d9a400; color:#ffd970; background:rgba(154,106,0,.25);">🔎 Screened — said it’s about an appointment</div>
+          <div style="flex:1"></div>
+          <div class="callbtns">
+            <div class="cbtn"><div class="circ dec">✕</div>Decline</div>
+            <div class="cbtn"><div class="circ ans">✓</div>Answer</div>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>3.3 — Unknown caller that passed screening</b>The caller passed the challenge and told the whisper-AI why they’re calling; Mary sees the stated reason before answering. SafeCall stays on the line.</p>
+    </div>
+
+    <!-- 3.4 in-call warning medium -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui callscreen">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center">
+          <p style="font-size:17px; color:#cdd6e0;">On a call · 4:12</p>
+          <h3 style="font-size:28px; margin-top:4px;">Unknown caller</h3>
+          <div style="flex:1"></div>
+          <div class="banner warn" style="width:100%; font-size:19px; text-align:left;">⚠️ <span><b>Be careful.</b> This caller is asking about money. Sarah has been told.</span></div>
+          <div style="flex:1"></div>
+          <div class="callbtns">
+            <div class="cbtn"><div class="circ dec">📞</div>Hang up</div>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>3.4 — Mid-call warning (medium confidence)</b>Live monitoring flagged money-talk: on-screen warning + caregiver alert, call continues. A quiet spoken note plays in Mary’s ear only.</p>
+    </div>
+
+    <!-- 3.5 high confidence ended -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center" style="background:var(--red-bg);">
+          <div class="bigicon">🛑</div>
+          <h3 style="color:var(--red);">We ended that call to protect you</h3>
+          <p style="margin-top:14px;">The caller was pretending to be your bank. <b>Your money is safe.</b></p>
+          <p style="margin-top:14px;">Sarah has been told and will call you soon.</p>
+          <button class="btn blue" style="margin-top:18px;">Call Sarah now</button>
+          <button class="btn ghost">OK</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>3.5 — High-confidence intervention</b>Spoken warning played first (“this call may be a scam — hang up…”), then auto-terminate. The screen explains in plain words, reassures, and routes to the caregiver — never asks Mary to judge.</p>
+    </div>
+
+    <!-- 3.6 voicemail -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body">
+          <h3>New message</h3>
+          <p style="font-size:17px; color:var(--muted); margin-top:4px;">Today 8:15 AM · Unknown caller</p>
+          <button class="btn blue" style="min-height:84px; font-size:26px; margin-top:18px;">▶ &nbsp;Listen to summary</button>
+          <div class="card" style="margin-top:16px;">
+            <p style="font-size:18px; line-height:1.4;">“The caller says they’re from your bank and wants you to call back urgently. <b>This is probably a scam.</b> You don’t need to do anything.”</p>
+          </div>
+          <div style="flex:1"></div>
+          <button class="btn ghost">Play the full message</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>3.6 — Voicemail with spoken AI summary</b>Summary is delivered as TTS audio (the big play button); the text is a supplement. Scam-likelihood phrased as a signal (“probably”), with “you don’t need to do anything” as the action.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<section class="journey" id="cg-use">
+  <h2><span class="tag cg">Caregiver app</span> 4 · Daily use — Sarah’s point of view</h2>
+  <p class="lede">Sarah’s role is asynchronous: get alerted, review, tune. She is never a real-time gate — every screen here is review-and-decide, not answer-in-seconds.</p>
+
+  <div class="row">
+    <!-- 4.1 dashboard -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="logo">🛡</span> Mom’s SafeCall</div>
+        <div class="body">
+          <div class="card" style="border-color:var(--green); background:var(--green-bg);">
+            <h4>● Mom’s phone is reachable</h4>
+            <p>Last check-in 4 minutes ago · Protection active</p>
+          </div>
+          <p style="font-weight:700; font-size:14px; margin-top:12px;">Today</p>
+          <div class="listrow"><div class="ic g">✓</div><div class="t"><b>Sarah → Mom</b><span>9:02 AM · Trusted · 11 min</span></div></div>
+          <div class="listrow"><div class="ic a">🔎</div><div class="t"><b>Lakeview Clinic</b><span>8:40 AM · Screened, Mom answered</span></div><span class="pill warn">Review</span></div>
+          <div class="listrow"><div class="ic r">🚫</div><div class="t"><b>“Your bank” — likely scam</b><span>8:15 AM · Sent to voicemail</span></div><span class="pill bad">High risk</span></div>
+          <div class="listrow"><div class="ic b">🤖</div><div class="t"><b>Robocall blocked</b><span>7:58 AM · Failed the screening question</span></div></div>
+          <div style="flex:1"></div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn ghost sm" style="flex:1;">Trusted list</button>
+            <button class="btn blue sm" style="flex:1; margin-top:12px;">Call Mom</button>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>4.1 — Caregiver dashboard</b>Reachability heartbeat on top (the live-call delivery gate), then today’s calls with outcomes in plain language.</p>
+    </div>
+
+    <!-- 4.2 live alert -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Live call alert</div>
+        <div class="body">
+          <div class="banner danger" style="font-size:14px;">⚠️ <span><b>Mom is on a call that looks like a scam.</b><br>Started 9:46 AM · still in progress</span></div>
+          <div class="card">
+            <h4>What the AI heard</h4>
+            <p style="font-style:italic;">“…there’s a warrant out — you can fix this today if you buy gift cards and read me the numbers…”</p>
+            <div class="meter"><i style="width:88%; background:var(--red);"></i></div>
+            <p class="sub">Scam likelihood: <b>High</b> · “gift cards”, urgency, threat</p>
+          </div>
+          <div class="card">
+            <h4>What SafeCall is doing</h4>
+            <p>Playing a spoken warning to Mom now. If the call continues, it ends automatically in <b>20 s</b>.</p>
+          </div>
+          <button class="btn red sm">End the call now</button>
+          <button class="btn ghost sm">Call Mom right after</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>4.2 — Live scam alert</b>The system already acted on pre-set logic (no human veto); Sarah’s buttons accelerate or follow up — they’re never the safety mechanism.</p>
+    </div>
+
+    <!-- 4.3 voicemail triage -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Voicemail review</div>
+        <div class="body">
+          <p class="sub">8:15 AM · (236) 555-0871 · 0:42</p>
+          <div class="card">
+            <h4>AI summary</h4>
+            <p>Unknown caller claims to be the bank’s fraud team and urges an urgent callback to a different number.</p>
+            <div class="meter"><i style="width:90%; background:var(--red);"></i></div>
+            <p class="sub">Scam likelihood: <b>High</b> — a signal, not a verdict</p>
+          </div>
+          <div class="card">
+            <h4>Transcript</h4>
+            <p style="font-style:italic;">“Mrs. Thompson, this is the TD fraud department. Your account has been compromised. Call us back immediately at…”</p>
+          </div>
+          <button class="btn ghost sm">▶ Play recording</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn red sm" style="flex:1;">Block number</button>
+            <button class="btn ghost sm" style="flex:1; margin-top:12px;">Mark as safe</button>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>4.3 — Voicemail triage</b>Transcribe + summarize + scam-probability, async and cost-gated. Explicitly labeled “a signal, not a verdict.”</p>
+    </div>
+
+    <!-- 4.4 new caller approval -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> New caller for Mom</div>
+        <div class="body">
+          <div class="card">
+            <h4>Caller said they are “Lakeview Medical Clinic”</h4>
+            <p class="sub">(604) 555-0142 · called today 8:40 AM · reason given: “appointment reminder”</p>
+          </div>
+          <div class="card">
+            <h4>What we can confirm</h4>
+            <div class="kv"><span class="k">Public directory</span><span class="pill ok">Matches a medical clinic</span></div>
+            <div class="kv"><span class="k">Line type</span><span class="pill ok">Business landline</span></div>
+            <div class="kv"><span class="k">Caller-ID verification</span><span class="pill warn">Not verified</span></div>
+            <div class="kv"><span class="k">Branded caller ID</span><span class="pill info">Not enrolled</span></div>
+          </div>
+          <button class="btn blue sm">📞 Verify: call their published number</button>
+          <p class="sub" style="margin-top:6px; text-align:center;">Safest check — never trust the number that called in.</p>
+          <div style="display:flex; gap:8px;">
+            <button class="btn green sm" style="flex:1;">Add to trusted</button>
+            <button class="btn ghost sm" style="flex:1; margin-top:12px;">Keep screening</button>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>4.4 — New-caller validation (“changed doctors” problem)</b>Lookup enrichment as decision-support, with one-tap callback-to-published-number as the real safety guarantee.</p>
+    </div>
+
+    <!-- 4.5 trusted list mgmt -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Trusted callers · 12</div>
+        <div class="body">
+          <div class="listrow"><div class="ic g">👩</div><div class="t"><b>Sarah (you)</b><span>Daughter</span></div><span class="sub">Edit</span></div>
+          <div class="listrow"><div class="ic g">👨</div><div class="t"><b>Tom Thompson</b><span>Son</span></div><span class="sub">Edit</span></div>
+          <div class="listrow"><div class="ic g">🏥</div><div class="t"><b>Dr. Patel’s office</b><span>Added from contacts</span></div><span class="sub">Edit</span></div>
+          <div class="listrow"><div class="ic g">🏦</div><div class="t"><b>TD Bank — branch</b><span>Verified by callback ✓</span></div><span class="sub">Edit</span></div>
+          <div class="listrow"><div class="ic a">💊</div><div class="t"><b>Shoppers Pharmacy</b><span>Suggested from call history</span></div><span class="pill warn">Approve?</span></div>
+          <button class="btn ghost sm">＋ Add trusted caller</button>
+          <div class="card" style="background:var(--blue-bg); border-color:var(--blue);">
+            <p style="font-size:12.5px;">ℹ️ Trusted callers skip the screening question, but SafeCall still listens for scams on every call — including these.</p>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>4.5 — Allowlist management</b>Caregiver add/remove/edit, auto-suggestions from contacts and repeated call history, and the monitoring-never-off rule restated where it matters.</p>
+    </div>
+
+    <!-- 4.6 heartbeat -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Reachability</div>
+        <div class="body">
+          <div class="banner warn" style="font-size:14px;">⚠️ <span><b>We haven’t heard from Mom’s phone in 26 hours.</b><br>Live calls are going to voicemail. Nothing is lost — every message shows up here.</span></div>
+          <div class="card">
+            <h4>Most likely causes</h4>
+            <p style="margin-top:4px;">① Phone is off or out of coverage</p>
+            <p style="margin-top:4px;">② The app was force-stopped in Settings</p>
+            <p style="margin-top:4px;">③ Battery saver put SafeCall to sleep</p>
+          </div>
+          <div class="card">
+            <h4>While unreachable</h4>
+            <div class="kv"><span class="k">Voicemails waiting</span><span><b>2</b> (1 high risk)</span></div>
+            <div class="kv"><span class="k">Last check-in</span><span>Yesterday 7:31 AM</span></div>
+          </div>
+          <button class="btn blue sm">Call Mom’s other number</button>
+          <button class="btn ghost sm">How to fix her phone</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>4.6 — Reachability heartbeat alert</b>The non-optional backstop for the app-is-sole-delivery-path architecture: degrade to voicemail gracefully, keep the outage window short via the caregiver.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<section class="journey" id="uninstall">
+  <h2>5 · Stopping or removing SafeCall — both sides</h2>
+  <p class="lede">Order matters: forwarding must be switched off <b>before</b> the app is removed, or calls keep flowing to the relay with no app to receive them. The flow enforces that and verifies it with a test call.</p>
+
+  <div class="row">
+    <!-- 5.1 caregiver stop -->
+    <div class="device">
+      <div class="phone ios"><div class="screen cg-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="appbar"><span class="back">‹</span> Pause or stop protection</div>
+        <div class="body">
+          <div class="card">
+            <h4>⏸ Pause protection</h4>
+            <p>Calls ring Mom directly again. Settings and trusted list are kept. Resume any time.</p>
+            <button class="btn ghost sm">Pause</button>
+          </div>
+          <div class="card" style="border-color:var(--red);">
+            <h4>🗑 Remove SafeCall completely</h4>
+            <p>Two steps, in this order:</p>
+            <p style="margin-top:6px;">① <b>Turn off call forwarding</b> on Mom’s phone (we do it with one tap there, or dial <b>#21#</b>)</p>
+            <p style="margin-top:4px;">② Delete the app from her phone</p>
+            <p class="sub" style="margin-top:6px;">Doing ② before ① would send her calls to a service with no app to answer — so we check forwarding is off first.</p>
+            <button class="btn red sm">Start removal</button>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>5.1 — Caregiver: pause vs. remove</b>Pause is the cheap reversible path; full removal is sequenced so forwarding is provably off before the app goes.</p>
+    </div>
+
+    <!-- 5.2 elder deactivate -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body">
+          <h3>Turn off SafeCall</h3>
+          <p style="margin-top:10px;">Sarah asked to stop the protection. This switches your calls back to normal.</p>
+          <div class="dialcode">#21#</div>
+          <button class="btn green">Dial it for me</button>
+          <div style="flex:1"></div>
+          <button class="btn ghost">Cancel — keep protection</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>5.2 — Elder phone: switch forwarding off</b>Same one-tap dialing pattern as setup. Caregiver-initiated, confirmed on the parent’s phone.</p>
+    </div>
+
+    <!-- 5.3 confirmation -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center" style="background:var(--blue-bg);">
+          <div class="bigicon">📞</div>
+          <h3>Your calls ring directly again</h3>
+          <p style="margin-top:12px;">We made a test call — it rang your phone the normal way. SafeCall is no longer screening.</p>
+          <p style="margin-top:12px;">It is now safe to delete this app.</p>
+          <button class="btn blue" style="margin-top:16px;">Delete the app</button>
+          <button class="btn ghost">Keep it installed</button>
+        </div>
+      </div></div>
+      <p class="cap"><b>5.3 — Verified off, then delete</b>Mirror of setup: a real test call proves forwarding is off before suggesting deletion. Sarah’s app confirms, and recordings/transcripts are deleted on request.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<section class="journey" id="platforms">
+  <h2>6 · iPhone vs Android — the same incoming call</h2>
+  <p class="lede">The elder app follows each platform’s native incoming-call surface so the experience matches what the phone already does. Same information hierarchy on both: who, relationship, trust status, two actions.</p>
+
+  <div class="row">
+    <!-- 6.1 ios -->
+    <div class="device">
+      <div class="phone ios"><div class="screen elder-ui callscreen" style="background:linear-gradient(180deg,#1b1b1f 0%,#2c2c34 100%);">
+        <div class="sbar"><span>9:41</span><span>📶 🛜 🔋</span></div>
+        <div class="body center">
+          <p style="font-size:17px; color:#9aa3ad; margin-bottom:2px;">SafeCall</p>
+          <h3 style="font-size:38px; font-weight:600;">Sarah</h3>
+          <p style="font-size:20px; color:#cdd6e0; margin:4px 0 14px;">Your daughter · ✓ Trusted</p>
+          <div style="flex:1"></div>
+          <div style="width:100%; display:flex; gap:10px; margin-bottom:14px;">
+            <button class="btn ghost sm" style="flex:1; background:rgba(255,255,255,.12); color:#fff; border:none;">🔕 Remind</button>
+            <button class="btn ghost sm" style="flex:1; margin-top:12px; background:rgba(255,255,255,.12); color:#fff; border:none;">💬 Message</button>
+          </div>
+          <div class="callbtns">
+            <div class="cbtn"><div class="circ dec">✕</div>Decline</div>
+            <div class="cbtn"><div class="circ ans">✓</div>Accept</div>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>6.1 — iPhone <span class="tag ios">CallKit</span></b>VoIP push (PushKit) → CallKit paints the native full-screen call UI — and relaunches the app even after a force-quit. Every VoIP push reports a real call, satisfying the iOS 13+ rule.</p>
+    </div>
+
+    <!-- 6.2 android -->
+    <div class="device">
+      <div class="phone and"><div class="screen elder-ui callscreen">
+        <div class="sbar"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="body center">
+          <p style="font-size:16px; color:#9aa3ad;">Incoming call · SafeCall</p>
+          <div class="avatar" style="margin-top:10px;">S</div>
+          <h3 style="font-size:36px;">Sarah</h3>
+          <p style="font-size:20px; color:#cdd6e0; margin:4px 0 14px;">Your daughter</p>
+          <div class="vbadge">✓ Trusted caller</div>
+          <div style="flex:1"></div>
+          <div class="callbtns">
+            <div class="cbtn"><div class="circ dec">✕</div>Decline</div>
+            <div class="cbtn"><div class="circ ans">✓</div>Answer</div>
+          </div>
+        </div>
+      </div></div>
+      <p class="cap"><b>6.2 — Android <span class="tag and">Telecom / ConnectionService</span></b>High-priority FCM data message wakes the app into the system call UI. Residual risks (Force Stop, OEM battery killers) are handled at setup (2.3) and by the heartbeat (4.6).</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:4px;">
+    <b>Platform differences that show up in the UX:</b> on iOS the call banner says “SafeCall Audio” (CallKit requirement) and a voicemail alert still arrives even after a force-quit; on Android a Force-Stopped app receives nothing until reopened — which is why the <i>caregiver’s</i> notification path (their own device) is the reliable backstop, and why screen 2.3 (battery exemption) is part of mandatory setup.
+  </div>
+</section>
+
+<footer class="page">
+  <p><b>Design rules applied to every elder screen:</b> Atkinson Hyperlegible at ≥17 px (body ≥20 px), WCAG-AAA-level contrast, one decision per screen, at most two buttons, no scrolling required for the primary action, spoken audio leads and the screen supplements. Caregiver screens use standard density since the caregiver is the configuring power-user. All names, numbers, and the “SafeCall” brand are placeholders.</p>
+</footer>
+
+</body>
+</html>
